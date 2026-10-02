@@ -7,6 +7,9 @@ import pandas as pd                         # For handling datasets
 from sklearn.model_selection import train_test_split  # For splitting dataset
 from dataclasses import dataclass           # For creating configuration class
 
+from src.components.data_transformation import DataTransformation  # For data transformation
+from src.components.data_transformation import DataTransformationConfig  # For data transformation configuration
+
 # Configuration class to store file paths
 @dataclass
 class DataIngestionConfig:
@@ -57,4 +60,7 @@ class DataIngestion:
 if __name__ == "__main__":
     # If this script is run directly, initiate data ingestion
     obj = DataIngestion()
-    obj.initiate_data_ingestion()
+    train_data, test_data = obj.initiate_data_ingestion()
+
+    data_transformation = DataTransformation()
+    train_arr, test_arr, preprocessor_path = data_transformation.initiate_data_transformation(train_data, test_data)
