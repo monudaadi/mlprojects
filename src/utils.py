@@ -4,6 +4,7 @@ import numpy as np
 import pandas as pd
 from src.exception import CustomException
 import dill
+from sklearn.metrics import r2_score
 
 
 def save_object(file_path, obj):
@@ -28,3 +29,34 @@ def save_object(file_path, obj):
 
     except Exception as e:
         raise CustomException(e, sys)   
+
+def evaluate_models(X_train, y_train, X_test, y_test, models):
+    """
+    Evaluate multiple machine learning models and return their R2 scores.
+
+    Args:
+        X_train (np.ndarray): Training features.
+        y_train (np.ndarray): Training target values.
+        X_test (np.ndarray): Testing features.
+        y_test (np.ndarray): Testing target values.
+        models (dict): A dictionary of model names and their corresponding model instances.
+
+    Returns:
+        dict: A dictionary containing model names and their corresponding R2 scores.
+        """
+    try:
+        model_report = {}
+
+        for model_name, model in models.items():
+            model.fit(X_train, y_train)
+            # y_pred = model.predict(X_test)
+            y_train_pred = model.predict(X_train)
+            y_test_pred = model.predict(X_test)
+            r2_square_test = r2_score(y_test, y_test_pred)
+            r2_square_train = r2_score(y_train, y_train_pred)
+            model_report[model_name] = r2_square_test
+
+        return model_report
+
+    except Exception as e:
+        raise CustomException(e, sys)

@@ -9,6 +9,8 @@ from dataclasses import dataclass           # For creating configuration class
 
 from src.components.data_transformation import DataTransformation  # For data transformation
 from src.components.data_transformation import DataTransformationConfig  # For data transformation configuration
+from src.components.model_trainer import ModelTrainer  # For model training
+from src.components.model_trainer import ModelTrainerConfig  # For model training configuration
 
 # Configuration class to store file paths
 @dataclass
@@ -64,3 +66,7 @@ if __name__ == "__main__":
 
     data_transformation = DataTransformation()
     train_arr, test_arr, preprocessor_path = data_transformation.initiate_data_transformation(train_data, test_data)
+
+    model_trainer = ModelTrainer()
+    r2_score = model_trainer.initiate_model_trainer(train_arr, test_arr)
+    print(f"R2 Score of the best model: {r2_score}")
